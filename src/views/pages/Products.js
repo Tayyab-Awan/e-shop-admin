@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     CCard,
     CCardBody,
@@ -9,13 +9,26 @@ import {
     CRow,
     CButton,
 } from "@coreui/react";
-import CIcon from '@coreui/icons-react'
+import CIcon from '@coreui/icons-react';
+import { useSelector } from 'react-redux';
 import ProductModal from '../../components/modals/Modal';
 import ProductForm from '../../components/forms/ProductForm';
 
-const Products = () => {
+const Products = ({ history }) => {
     const [showProductModal, setProductModal] = useState(false);
     const [showEditProductModal, setEditProductModal] = useState(false);
+
+    const { userInfo } = useSelector(state => state.userLogin)
+    useEffect(() => {
+        if (!userInfo || !userInfo.isAdmin) {
+            const location = {
+                pathname: '/login',
+                state: { from: '/products' }
+            }
+
+            history.push(location)
+        }
+    }, [history, userInfo])
 
     const hanldleProductModal = () => {
         setProductModal(!showProductModal);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CCard,
   CCardBody,
@@ -8,14 +8,27 @@ import {
   CRow,
   CButton,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+import CIcon from '@coreui/icons-react';
+import { useSelector } from 'react-redux';
 
 import UserModal from '../../components/modals/Modal';
 import UserForm from '../../components/forms/UserForm';
 
-const Users = () => {
+const Users = ({ history }) => {
   const [showNewUserModal, setNewUserModal] = useState(false);
   const [showEditUserModal, setEditUserModal] = useState(false);
+
+  const { userInfo } = useSelector(state => state.userLogin);
+
+  useEffect(() => {
+    if (!userInfo || !userInfo.isAdmin) {
+      const location = {
+        pathname: '/login',
+        state: { from: '/users' }
+      }
+      history.push(location);
+    }
+  }, [history, userInfo])
 
   const fields = [
     'name',
