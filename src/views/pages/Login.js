@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -14,34 +14,9 @@ import {
   CInputGroupText,
   CRow
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react';
-import Message from '../../components/messages/Message';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../actions/userActions';
-import ButtonLoader from 'src/components/loaders/ButtonLoader';
+import CIcon from '@coreui/icons-react'
 
-const Login = ({ location, history }) => {
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const redirect = location.state ? location.state.from : '/dashboard';
-
-  const dispatch = useDispatch();
-  const userLogin = useSelector(state => state.userLogin);
-  const { loading, error, userInfo } = userLogin;
-  const isAdmin = userInfo && userInfo.isAdmin;
-
-  useEffect(() => {
-    if (userInfo) {
-      history.push(redirect)
-    }
-  }, [userInfo, history, redirect, isAdmin])
-
-  const loginHandler = () => {
-    dispatch(login(email, password))
-  }
-
+const Login = () => {
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -50,25 +25,16 @@ const Login = ({ location, history }) => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  {
-                    error
-                      ? <Message color='warning' message={error} />
-                      : null
-                  }
                   <CForm>
                     <h1>Login</h1>
                     <p className="text-muted">Sign In to your account</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupPrepend>
                         <CInputGroupText>
-                          <CIcon name="cib-mail-ru" />
+                          <CIcon name="cil-user" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput
-                        type="text"
-                        placeholder="Email"
-                        autoComplete="email"
-                        onChange={(e) => setEmail(e.target.value)} />
+                      <CInput type="text" placeholder="Username" autoComplete="username" />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupPrepend>
@@ -76,26 +42,11 @@ const Login = ({ location, history }) => {
                           <CIcon name="cil-lock-locked" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput
-                        type="password"
-                        placeholder="Password"
-                        autoComplete="current-password"
-                        onChange={(e) => setPassword(e.target.value)} />
+                      <CInput type="password" placeholder="Password" autoComplete="current-password" />
                     </CInputGroup>
                     <CRow>
                       <CCol xs="6">
-                        <CButton
-                          color="primary"
-                          className="px-4"
-                          onClick={loginHandler}
-                          disabled={loading}
-                        >Login
-                        {
-                            loading
-                              ? <ButtonLoader />
-                              : null
-                          }
-                        </CButton>
+                        <CButton color="primary" className="px-4">Login</CButton>
                       </CCol>
                       <CCol xs="6" className="text-right">
                         <CButton color="link" className="px-0">Forgot password?</CButton>

@@ -26,8 +26,7 @@ import {
   cibStripe,
   cibPaypal,
   cibGooglePay,
-  cibCcAmex,
-  cibMailRu
+  cibCcAmex
 } from '@coreui/icons'
 import {
   cifUs,
@@ -235,7 +234,6 @@ export const icons = Object.assign({}, {
   cifEs,
   cifPl
 }, {
-  cibMailRu,
   cibSkype,
   cibFacebook,
   cibTwitter,

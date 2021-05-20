@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from 'react'
+import React, { lazy } from 'react'
 import {
   CBadge,
   CButton,
@@ -13,26 +13,13 @@ import {
   CCallout
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { useSelector } from 'react-redux';
 
 import MainChartExample from '../charts/MainChartExample.js'
 
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
 const WidgetsBrand = lazy(() => import('../widgets/WidgetsBrand.js'))
 
-const Dashboard = ({ history }) => {
-
-  const { userInfo } = useSelector(state => state.userLogin);
-
-  useEffect(() => {
-    if (!userInfo || !userInfo.isAdmin) {
-      const location = {
-        pathname: '/login',
-        state: { from: '/dashboard' }
-      }
-      history.push(location);
-    }
-  }, [history, userInfo])
+const Dashboard = () => {
 
   return (
     <>

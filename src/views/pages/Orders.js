@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
     CCard,
     CCardBody,
@@ -8,24 +8,9 @@ import {
     CContainer,
     CButton,
 } from "@coreui/react";
-import CIcon from '@coreui/icons-react';
-import { useSelector } from 'react-redux';
+import CIcon from '@coreui/icons-react'
 
-const Orders = ({ history }) => {
-
-    const { userInfo } = useSelector(state => state.userLogin)
-
-    useEffect(() => {
-        if (!userInfo || !userInfo.isAdmin) {
-            const location = {
-                pathname: '/login',
-                state: { from: '/orders' }
-            }
-
-            history.push(location)
-        }
-    }, [history, userInfo])
-
+const Orders = () => {
     const fields = [
         'id',
         'user',

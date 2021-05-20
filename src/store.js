@@ -2,21 +2,13 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { sidebarShowReducer } from './reducers/layoutReducer';
-import { userLoginReducer } from './reducers/userReducers';
-
-const userFromStorage = localStorage.getItem('userInfo')
-  ? JSON.parse(localStorage.getItem('userInfo'))
-  : null
 
 const initialState = {
-  sidebarShow: 'responsive',
-  userLogin: { userInfo: userFromStorage },
+  sidebarShow: 'responsive'
 }
 
 const reducer = combineReducers({
-  sidebarShow: sidebarShowReducer,
-  userLogin: userLoginReducer,
-
+  sidebarShow: sidebarShowReducer
 })
 
 const middleware = [thunk];
