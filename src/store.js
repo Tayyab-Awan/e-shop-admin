@@ -3,6 +3,8 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { sidebarShowReducer } from './reducers/layoutReducer';
 import { userLoginReducer } from './reducers/userReducers';
+import { productListReducer, productAddReducer } from './reducers/productReducers';
+
 
 const userFromStorage = localStorage.getItem('userInfo')
   ? JSON.parse(localStorage.getItem('userInfo'))
@@ -16,7 +18,8 @@ const initialState = {
 const reducer = combineReducers({
   sidebarShow: sidebarShowReducer,
   userLogin: userLoginReducer,
-
+  productList: productListReducer,
+  addedProduct: productAddReducer,
 })
 
 const middleware = [thunk];

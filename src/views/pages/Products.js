@@ -10,15 +10,21 @@ import {
     CButton,
 } from "@coreui/react";
 import CIcon from '@coreui/icons-react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { listProducts } from '../../actions/productActions';
 import ProductModal from '../../components/modals/Modal';
 import ProductForm from '../../components/forms/ProductForm';
+import Message from "src/components/messages/Message";
 
 const Products = ({ history }) => {
     const [showProductModal, setProductModal] = useState(false);
     const [showEditProductModal, setEditProductModal] = useState(false);
 
-    const { userInfo } = useSelector(state => state.userLogin)
+    const { userInfo } = useSelector(state => state.userLogin);
+    const { loading, products, error } = useSelector(state => state.productList);
+
+    const dispatch = useDispatch();
+
     useEffect(() => {
         if (!userInfo || !userInfo.isAdmin) {
             const location = {
@@ -28,7 +34,10 @@ const Products = ({ history }) => {
 
             history.push(location)
         }
-    }, [history, userInfo])
+        else {
+            dispatch(listProducts())
+        }
+    }, [history, userInfo, dispatch])
 
     const hanldleProductModal = () => {
         setProductModal(!showProductModal);
@@ -42,10 +51,11 @@ const Products = ({ history }) => {
         'image',
         'brand',
         'category',
-        'description',
+        'rating',
         'price',
-        'stock',
-        'actions'
+        { key: 'countInStock', label: 'stock' },
+        { key: 'createdAt', label: 'created at', },
+        { key: 'actions', _style: { width: '10%' } }
     ]
 
     return (
@@ -69,39 +79,47 @@ const Products = ({ history }) => {
                         </CRow>
                     </CCardHeader>
                     <CCardBody>
-                        <CDataTable
-                            // items={}
-                            fields={fields}
-                            bordered
-                            sorter
-                            tableFilter
-                            responsive
-                            itemsPerPage={5}
-                            pagination
-                            scopedSlots={{
-                                actions: (item) => (
-                                    <td>
-                                        <CButton
-                                            className="mr-3"
-                                            variant="outline"
-                                            shape="square"
-                                            color="info"
-                                            size="sm"
-                                            onClick={hanldleEditProductModal}
-                                        >
-                                            <CIcon name="cil-pencil" size="sm"></CIcon>
-                                        </CButton>
-                                        <CButton
-                                            variant="outline"
-                                            color="info"
-                                            shape="square"
-                                            size="sm">
-                                            <CIcon name="cil-trash" size="sm"></CIcon>
-                                        </CButton>
-                                    </td>
-                                ),
-                            }}
-                        />
+                        {
+                            error
+                                ? <Message color='warning' message={error} />
+                                : <CDataTable
+                                    loading={loading}
+                                    items={products}
+                                    fields={fields}
+                                    bordered
+                                    sorter
+                                    tableFilter
+                                    responsive
+                                    itemsPerPage={5}
+                                    pagination
+                                    scopedSlots={{
+                                        'actions': (item) => (
+                                            <td>
+                                                <CButton
+                                                    className="mr-3"
+                                                    variant="outline"
+                                                    shape="square"
+                                                    color="info"
+                                                    size="sm"
+                                                    onClick={hanldleEditProductModal}
+                                                >
+                                                    <CIcon name="cil-pencil" size="sm"></CIcon>
+                                                </CButton>
+                                                <CButton
+                                                    variant="outline"
+                                                    color="info"
+                                                    shape="square"
+                                                    size="sm"
+                                                    onClick={() => console.log('item to delete: ', item)}
+                                                >
+                                                    <CIcon name="cil-trash" size="sm"></CIcon>
+                                                </CButton>
+                                            </td>
+                                        ),
+                                    }}
+                                />
+                        }
+
                     </CCardBody>
                 </CCard>
             </CCol>

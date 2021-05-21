@@ -5,6 +5,7 @@ import {
     USER_LOGIN_FAIL,
     USER_LOGIN_UNAUTHORIZED
 } from '../constants/userConstants';
+import { getAPIURL } from '../utills/APIUtills';
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -17,12 +18,7 @@ export const login = (email, password) => async (dispatch) => {
                 'Content-Type': 'application/json'
             }
         }
-        let url = '';
-        if (process.env.NODE_ENV === 'production')
-            url = process.env.REACT_APP_SERVICE_URI;
-        else
-            url = 'http://127.0.0.1:5000'
-
+        let url = getAPIURL();
         const { data } = await axios.post(
             `${url}/api/users/login`,
             { email, password },
